@@ -1,0 +1,7 @@
+{
+  "name": "salmon-social",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
