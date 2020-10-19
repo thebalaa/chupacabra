@@ -1,10 +1,10 @@
 body{
-  --ion-color-primary: #14cba8;
-  --ion-color-primary-rgb: 20,203,168;
+  --ion-color-primary: #ef5350;
+  --ion-color-primary-rgb: 239,83,80;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0,0,0;
-  --ion-color-primary-shade: #12b394;
-  --ion-color-primary-tint: #2cd0b1;
+  --ion-color-primary-shade: #d24946;
+  --ion-color-primary-tint: #f16462;
 
   --ion-color-secondary: #64ffda;
   --ion-color-secondary-rgb: 100,255,218;
