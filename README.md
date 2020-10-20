@@ -1,4 +1,4 @@
-# Chupacacra / Dracula
+# Chupacabra / Dracula
 Decentralized Social media built on top of the Matrix Protocol. Sucks blood from other social media sites.
 
 ## install / dev
