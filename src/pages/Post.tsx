@@ -14,7 +14,7 @@ const Post: React.FC = () => {
       <IonHeader>
         <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/feed" />
+              <IonBackButton />
             </IonButtons>
           <IonTitle>{post.title}</IonTitle>
         </IonToolbar>
