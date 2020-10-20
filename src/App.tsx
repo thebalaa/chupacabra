@@ -1,10 +1,7 @@
 import React from 'react';
-import { RecoilRoot } from 'recoil'
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
-import Post from './pages/Post';
+import { IonApp } from '@ionic/react';
+import {RecoilRoot} from 'recoil'
+import AppRouter from './components/AppRouter'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -28,15 +25,9 @@ import './theme/variables.css';
 const App: React.FC = () => (
   <RecoilRoot>
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/feed" component={Home} exact={true} />
-          <Route path="/posts/:postId" component={Post} />
-          <Route exact path="/" render={() => <Redirect to="/feed" />} />
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <AppRouter />
     </IonApp>
   </RecoilRoot>
-);
+)
 
 export default App;
