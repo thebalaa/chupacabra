@@ -1,24 +1,35 @@
-import { atomFamily, atom} from 'recoil'
-import {article} from './test'
+import { selectorFamily, selector, atom} from 'recoil'
 
-type PostType = {
+export type PostType = {
   chupacabra_source: string,
   remote_source: string,
   title: string,
   html: string
 }
 
-export const postState = atomFamily<PostType, string>({
-  key: 'Post',
-  default: {
-    chupacabra_source: '#PatrickTech:tincan.community',
-    remote_source: 'Twitter',
-    html: article,
-    title: 'MAS wins in Bolivia!'
-  },
+export const postsState = atom<Map<string, PostType>>({
+  key: 'PostMap',
+  default: new Map<string, PostType>()
 })
 
-export const postList = atom<Array<string>>({
-  key: 'PostList',
-  default: ['one'] //Array<string>()
+export const postState = selectorFamily<PostType, string>({
+  key: 'Post',
+  get: (postId) => ({get}) => {
+    const postsMap = get(postsState)
+    const post: PostType = postsMap.get(postId) || {
+      chupacabra_source: '',
+      remote_source: '',
+      title: '',
+      html: ''
+    }
+    return post
+  }
+})
+
+export const postList = selector<Array<string>>({
+  key: "PostList",
+  get: ({get}) => {
+    const postMap = get(postsState)
+    return Array.from(postMap.keys())
+  }
 })

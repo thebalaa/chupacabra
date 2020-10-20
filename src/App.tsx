@@ -2,6 +2,7 @@ import React from 'react';
 import { IonApp } from '@ionic/react';
 import {RecoilRoot} from 'recoil'
 import AppRouter from './components/AppRouter'
+import MatrixScripts from './components/MatrixScripts'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -27,6 +28,7 @@ const App: React.FC = () => (
     <IonApp>
       <AppRouter />
     </IonApp>
+    <MatrixScripts />
   </RecoilRoot>
 )
 
