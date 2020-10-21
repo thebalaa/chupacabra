@@ -1,32 +1,20 @@
 import { IonList, IonItem, IonInput, IonText, IonLabel, IonButton} from '@ionic/react';
-import React, { useState, useLayoutEffect} from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
 import {useSetRecoilState} from 'recoil'
 import {loggedInState} from '../../recoil/auth'
-import {tryLogin, checkLoggedIn} from '../../matrix/MatrixJsSdk.js'
+import {tryLogin} from '../../matrix/MatrixJsSdk.js'
 
 const SignInPage: React.FC = () => {
   const [homeserver, setHomeserver] = useState<string>('https://');
   const [user, setUser] = useState<string>();
   const [password, setPassword] = useState<string>()
   const setLoggedIn = useSetRecoilState(loggedInState)
-  const history = useHistory()
   const tryLoggingIn = async () => {
     const didSucceed = await tryLogin(homeserver, user, password)
     if(didSucceed){
       setLoggedIn(true)
-      history.push('/feed')
     }
   }
-  useLayoutEffect(() => {
-    const loginIfCreds = async () => {
-      const wasLetIn = await checkLoggedIn()
-      if(wasLetIn){
-        setLoggedIn(true)
-      }
-    }
-    loginIfCreds()
-  }, [setLoggedIn])
   return (
     <>
       <IonList lines="inset">
