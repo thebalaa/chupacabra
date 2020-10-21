@@ -1,20 +1,28 @@
 import { IonList, IonItem, IonInput, IonText, IonLabel, IonButton} from '@ionic/react';
 import React, { useState } from 'react';
-import {useSetRecoilState} from 'recoil'
-import {loggedInState} from '../../recoil/auth'
-import {tryLogin} from '../../matrix/MatrixJsSdk.js'
+import {useRecoilValue} from 'recoil'
+import {loginErrorState} from '../../recoil/auth'
+import {useLoginWithPassword} from '../../matrix/Auth'
+
+const validURL = (url: string) => {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(url);
+}
+
 
 const SignInPage: React.FC = () => {
   const [homeserver, setHomeserver] = useState<string>('https://');
   const [user, setUser] = useState<string>();
   const [password, setPassword] = useState<string>()
-  const setLoggedIn = useSetRecoilState(loggedInState)
-  const tryLoggingIn = async () => {
-    const didSucceed = await tryLogin(homeserver, user, password)
-    if(didSucceed){
-      setLoggedIn(true)
-    }
-  }
+  const loginError = useRecoilValue(loginErrorState)
+  const loginWithPassword = useLoginWithPassword()
+  const isDisabled = !validURL(homeserver!) || !user || !password
+  const handleClick = () => loginWithPassword(homeserver!, user!, password!)
   return (
     <>
       <IonList lines="inset">
@@ -31,7 +39,8 @@ const SignInPage: React.FC = () => {
           <IonInput type="password" value={password} onIonChange={e => setPassword(e.detail.value!)}></IonInput>
         </IonItem>
       </IonList>
-      <IonButton expand="block" onClick={tryLoggingIn}>Sign In</IonButton>
+      {loginError && <IonText color='danger'>{loginError}</IonText>}
+      <IonButton disabled={isDisabled} expand="block" onClick={handleClick}>Sign In</IonButton>
     </>
   );
 };
