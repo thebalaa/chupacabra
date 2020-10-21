@@ -1,8 +1,8 @@
 {
-  "appId": "com.chupacabra.app",
-  "appName": "chupacabra",
+  "appId": "io.ionic.starter",
+  "appName": "salmon-social",
   "bundledWebRuntime": false,
-  "npmClient": "yarn",
+  "npmClient": "npm",
   "webDir": "build",
   "plugins": {
     "SplashScreen": {
