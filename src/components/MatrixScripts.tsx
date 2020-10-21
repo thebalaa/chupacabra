@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil'
 import {loggedInState} from '../recoil/auth'
-import {useLoginWithCreds, useSyncChupacabraPosts} from '../matrix/Matrix'
+import {useLoginWithCreds} from '../matrix/Auth'
+import {useSyncChupacabraPosts} from '../matrix/Sync'
 
 const LoggedInMatrixScripts: React.FC = () => {
   const syncPosts = useSyncChupacabraPosts()

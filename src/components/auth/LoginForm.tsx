@@ -2,7 +2,7 @@ import { IonList, IonItem, IonInput, IonText, IonLabel, IonButton} from '@ionic/
 import React, { useState } from 'react';
 import {useRecoilValue} from 'recoil'
 import {loginErrorState} from '../../recoil/auth'
-import {useLoginWithPassword} from '../../matrix/Matrix'
+import {useLoginWithPassword} from '../../matrix/Auth'
 
 const validURL = (url: string) => {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
