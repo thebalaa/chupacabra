@@ -3,13 +3,38 @@ import * as sdk from "matrix-js-sdk";
 import { useSetRecoilState } from 'recoil'
 import { postsState } from '../recoil/feed'
 import {article} from '../recoil/test'
+import {Plugins} from '@capacitor/core'
+
+const {Storage} = Plugins
+
+//{"user_id":"@patrick:tincan.community","access_token":"","home_server":"tincan.community","device_id":"FFMBULMEGW"}
 
 global.Olm = Olm
 export const tryLogin = async (homeserver, username, password) => {
   window.client = sdk.createClient(homeserver)
   let loginres = await window.client.loginWithPassword(username, password, (err, res) => null).catch(err => {console.error(err);})
   if (loginres){
+    const creds = {
+      baseUrl: homeserver,
+      userId: loginres.user_id,
+      accessToken: loginres.access_token
+    }
+    await Storage.set({
+      key:"chupacabra_mx_creds",
+      value: JSON.stringify(creds)
+    })
     return loginres
+  }
+  return false
+}
+
+//// TODO: Integrate with matrix-js-sdk store instead of doing this ourselves?
+export const checkLoggedIn = async () => {
+  const res = await Storage.get({key:'chupacabra_mx_creds'})
+  const creds = JSON.parse(res.value)
+  if (creds){
+    window.client = sdk.createClient(creds)
+   return true
   }
   return false
 }
