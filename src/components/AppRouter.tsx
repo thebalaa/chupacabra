@@ -13,11 +13,21 @@ const AppRouter: React.FC = () => {
   return (
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route path="/feed" component={Home} exact={true} />
-        <Route path="/posts/:postId" component={Post} />
-        <Route path="/letmein" component={Login} />
+        {wasLetIn
+          ?<>
+            <Route path="/feed" component={Home} exact={true}/>
+            <Route path="/posts/:postId" component={Post} exact={true}/>
+            <Route path="/letmein" render={() => <Redirect to="/feed"/>} exact={true}/>
+            <Route path="/" render={() => <Redirect to="/feed"/>} exact={true}/>
+           </>
+          :<>
+            <Route path="/feed" render={() => <Redirect to="/letmein"/>} exact={true}/>
+            <Route path="/posts/:postId" render={() => <Redirect to="/letmein"/>} exact={true}/>
+            <Route path="/letmein" component={Login} exact={true}/>
+            <Route path="/" render={() => <Redirect to="/letmein"/>} exact={true}/>
+           </>
+        }
       </IonRouterOutlet>
-      {wasLetIn?  <Route path="/" render={() => <Redirect to="/feed"/>} /> :  <Route path="*" render={() => <Redirect to="/letmein"/>} />}
     </IonReactRouter>
   );
 };
