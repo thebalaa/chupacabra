@@ -42,13 +42,14 @@ export const useLoginWithPassword = () => {
   return loginWithPassword
 }
 
-
-
-// {
-//   "type": "m.login.password",
-//   "identifier": {
-//     "type": "m.id.user",
-//     "user": "<user_id or user localpart>"
-//   },
-//   "password": "<password>"
-// }
+export const useLoginWithCreds = () => {
+  const letIn = useSetRecoilState(loggedInState)
+  const loginWithCreds = async () => {
+    const res = await Storage.get({key:'chupacabra_mx_creds'})
+    const creds = JSON.parse(res.value!)
+    if (creds){
+      letIn(true)
+    }
+  }
+  return loginWithCreds
+}
