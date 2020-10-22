@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {useSetRecoilState} from 'recoil'
-import {postsState} from '../recoil/feed'
+import {postsState, syncState} from '../recoil/feed'
 import {loggedInState} from '../recoil/auth'
 import {FILTER_CONFIG, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY} from './Config'
 import {Plugins} from '@capacitor/core'
@@ -29,7 +29,7 @@ const getFilterId = async (base_url: string, user_id: string, authHeader: any) =
 }
 
 const syncForever = async(base_url: string, authHeader: any, filter_id: string,
-                          setPosts: any) => {
+                          setPosts: any, setSynced: any) => {
   var since: string = ''
   while(true){
     const res = await axios({
@@ -41,21 +41,20 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
     if(res.data && res.data.rooms && res.data.rooms.join){
       const room_events: Array<any> = Object.values(res.data.rooms.join)
       const updatePosts = async () => {
-        room_events.filter(e=>e.timeline).flatMap(e=>e.timeline.events).map(e => {
-          if(e.content.msgtype === 'm.chupacabra'){
-            setPosts((posts: any) => {
-              var clone = new Map(posts);
-              clone.set(e.event_id, {
-                chupacabra_source: e.sender,
-                remote_source: 'Dracula Test Source',
-                title: e.content.title,
-                html: e.content.body
-              })
-              return clone
-            })
-          }
-          return true
+        const newPosts = room_events
+          .filter(e=>e.timeline).flatMap(e=>e.timeline.events)
+          .filter(e=>e.content.msgtype==='m.chupacabra')
+        setPosts((posts: any) =>{
+          var clone = new Map(posts)
+          newPosts.map(p => clone.set(p.event_id, {
+            chupacabra_source: p.sender,
+            remote_source: 'Dracula Test Source',
+            title: p.content.title,
+            html: p.content.body
+          }))
+          return clone
         })
+        setSynced(true)
       }
       updatePosts()
     }
@@ -66,6 +65,7 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
 export const useSyncChupacabraPosts = () => {
   const letIn = useSetRecoilState(loggedInState)
   const setPosts = useSetRecoilState(postsState)
+  const setSynced = useSetRecoilState(syncState)
   const syncPosts = async () =>  {
     const creds = await getCredsOrLogout(letIn)
     if(!creds){return}
@@ -74,7 +74,7 @@ export const useSyncChupacabraPosts = () => {
     const user_id = creds.user_id
     const filter_id = await getFilterId(base_url, user_id, authHeader)
     if(!filter_id){return}
-    syncForever(base_url, authHeader, filter_id, setPosts)
+    syncForever(base_url, authHeader, filter_id, setPosts, setSynced)
   }
   return syncPosts
 }

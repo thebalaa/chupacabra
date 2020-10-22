@@ -33,3 +33,8 @@ export const postList = selector<Array<string>>({
     return Array.from(postMap.keys())
   }
 })
+
+export const syncState = atom<boolean>({
+  key: "SyncState",
+  default: false
+})
