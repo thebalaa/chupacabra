@@ -11,6 +11,8 @@ import {postState} from '../recoil/feed'
 const Post: React.FC = () => {
   const {postId} = useParams()
   const post = useRecoilValue(postState(postId))
+  // TODO: Get room from post object once we actually have those getting passed in
+  const discussionRoom = '!vfsMVjFkUDCPvcWDFK:tincan.community'
   return (
     <>
       <Helmet>
@@ -34,7 +36,7 @@ const Post: React.FC = () => {
           </IonHeader>
           <div className="exernal-content" dangerouslySetInnerHTML={{__html: post.html}}/>
           <ChatFab />
-          <ChatModal />
+          <ChatModal title={post.title} room={discussionRoom} />
         </IonContent>
       </IonPage>
     </>
