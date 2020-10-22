@@ -1,7 +1,5 @@
 import React from 'react';
 import {IonFooter, IonToolbar, IonButtons, IonButton, IonTextarea} from '@ionic/react'
-import {useRecoilState} from 'recoil'
-import {chatModalState} from '../../recoil/chat'
 
 interface MessageComposerProps {
   room: string
