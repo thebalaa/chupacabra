@@ -24,9 +24,11 @@ export const FILTER_CONFIG = {
     not_types: ["*"]
   },
   event_format: "client",
-  
+
 }
 
 export const VALIDATE_STATUS = (status: number) => {
     return status < 500;
 }
+
+export const MATRIX_CREDS_STORAGE_KEY = 'chupacabra_matrix_creds'

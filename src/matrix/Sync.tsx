@@ -2,13 +2,13 @@ import axios from 'axios'
 import {useSetRecoilState} from 'recoil'
 import {postsState} from '../recoil/feed'
 import {loggedInState} from '../recoil/auth'
-import {FILTER_CONFIG, VALIDATE_STATUS} from './Config'
+import {FILTER_CONFIG, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY} from './Config'
 import {Plugins} from '@capacitor/core'
 
 const {Storage} = Plugins
 
 const getCredsOrLogout = async (letIn: (shouldLetIn: boolean) => void) => {
-  const res = await Storage.get({key:'chupacabra_mx_creds'})
+  const res = await Storage.get({key: MATRIX_CREDS_STORAGE_KEY})
   const creds = JSON.parse(res.value!)
   if(!creds){ // log out if we've called this without credentials
     letIn(false)
@@ -69,7 +69,7 @@ export const useSyncChupacabraPosts = () => {
   const syncPosts = async () =>  {
     const creds = await getCredsOrLogout(letIn)
     if(!creds){return}
-    const base_url = `https://matrix.${creds.home_server}/_matrix/client/r0`
+    const base_url = creds.base_url
     const authHeader = {Authorization: `Bearer ${creds.access_token}`}
     const user_id = creds.user_id
     const filter_id = await getFilterId(base_url, user_id, authHeader)
