@@ -1,8 +1,7 @@
 import React from 'react'
 import {useRecoilValue} from 'recoil'
 import {postState, PostType} from '../../recoil/feed'
-import {IonCard, IonText} from '@ionic/react'
-import SourceChip from '../SourceChip'
+import {IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton, IonCardContent} from '@ionic/react'
 import './PostItem.css'
 
 interface PostItemProps {
@@ -12,9 +11,12 @@ interface PostItemProps {
 const PostItem: React.FC<PostItemProps> = ({postId}) => {
   const post:PostType = useRecoilValue(postState(postId))
   return (
-    <IonCard button routerLink={`posts/${postId}`} routerDirection="forward">
-        <IonText>{post.title}</IonText>
-        <SourceChip chupacabra_source={post.chupacabra_source}/>
+    <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>{post.title}</IonCardTitle>
+          <IonCardSubtitle>{post.chupacabra_source}</IonCardSubtitle>
+        </IonCardHeader>
+        <IonCardContent><IonButton size="large" fill="outline" slot="end" routerLink={`posts/${postId}`} routerDirection="forward" >View</IonButton></IonCardContent>
     </IonCard>
   )
 }
