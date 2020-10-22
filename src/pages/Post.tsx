@@ -3,6 +3,7 @@ import React from 'react'
 import {Helmet} from "react-helmet"
 import {useParams} from 'react-router-dom'
 import ChatFab from '../components/chat/ChatFab'
+import ChatModal from '../components/chat/ChatModal'
 import {useRecoilValue} from 'recoil'
 import {postState} from '../recoil/feed'
 
@@ -33,6 +34,7 @@ const Post: React.FC = () => {
           </IonHeader>
           <div className="exernal-content" dangerouslySetInnerHTML={{__html: post.html}}/>
           <ChatFab />
+          <ChatModal />
         </IonContent>
       </IonPage>
     </>
