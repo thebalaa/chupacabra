@@ -27,6 +27,36 @@ export const FILTER_CONFIG = {
 
 }
 
+export const getRoomFilter = (roomId: string) => {return {
+  room: {
+    rooms: [roomId],
+    state: {
+      limit: 0,
+      not_types: ['*']
+    },
+    timeline: {
+      limit: 10,
+      types: [
+        "m.room.message"
+      ]
+    },
+    ephemeral: {
+      limit: 0,
+      not_types: ["*"]
+    }
+  },
+  presence: {
+    limit: 0,
+    not_types: ["*"]
+  },
+  account_data: {
+    limit: 0,
+    not_types: ["*"]
+  },
+  event_format: "client",
+
+}}
+
 export const VALIDATE_STATUS = (status: number) => {
     return status < 500;
 }

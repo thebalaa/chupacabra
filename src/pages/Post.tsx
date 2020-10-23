@@ -4,6 +4,7 @@ import {Helmet} from "react-helmet"
 import {useParams} from 'react-router-dom'
 import ChatFab from '../components/chat/ChatFab'
 import ChatModal from '../components/chat/ChatModal'
+import ChatSync from '../components/chat/ChatSync'
 import {useRecoilValue} from 'recoil'
 import {postState} from '../recoil/feed'
 
@@ -39,6 +40,7 @@ const Post: React.FC = () => {
           <ChatModal title={post.title} room={discussionRoom} />
         </IonContent>
       </IonPage>
+      <ChatSync room={discussionRoom}/>
     </>
   );
 };

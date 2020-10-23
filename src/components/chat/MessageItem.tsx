@@ -1,8 +1,9 @@
 import React from 'react';
 import {IonText, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle} from '@ionic/react'
+import {MessageType} from '../../recoil/chat'
 
 interface MessageItemProps {
-  message: any
+  message: MessageType
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({message}) => {
