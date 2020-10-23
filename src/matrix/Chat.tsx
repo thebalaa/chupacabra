@@ -2,7 +2,8 @@ import axios from 'axios'
 import {useSetRecoilState, useRecoilState} from 'recoil'
 import {messagesState, roomSyncState} from '../recoil/chat'
 import {loggedInState} from '../recoil/auth'
-import {getRoomFilter, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY} from './Config'
+import {getRoomFilter, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY,
+        CLIENT_API_PATH} from './Config'
 import { v4 as uuidv4 } from 'uuid'
 import {Plugins} from '@capacitor/core'
 
@@ -83,7 +84,7 @@ export const useSendMessage = (roomId: string) => {
   const sendMessage = async (message: string) => {
     const creds = await getCredsOrLogout(letIn)
     if(!creds){return}
-    const base_url = creds.base_url
+    const base_url = `${creds.homeserver_url}${CLIENT_API_PATH}`
     const authHeader = {Authorization: `Bearer ${creds.access_token}`}
     const txnId = uuidv4()
     await axios({

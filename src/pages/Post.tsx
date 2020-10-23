@@ -1,11 +1,11 @@
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react'
-import React from 'react'
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLoading} from '@ionic/react'
+import React, {Suspense} from 'react'
 import {Helmet} from "react-helmet"
 import {useParams} from 'react-router-dom'
 import ChatFab from '../components/chat/ChatFab'
 import ChatModal from '../components/chat/ChatModal'
 import ChatSync from '../components/chat/ChatSync'
-import MatrixMedia from '../components/MatrixMedia'
+import MatrixMedia from '../components/post/MatrixMedia'
 import {useRecoilValue} from 'recoil'
 import {postState} from '../recoil/feed'
 
@@ -36,7 +36,9 @@ const Post: React.FC = () => {
               <IonTitle>{post.title}</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <MatrixMedia uri={post.uri} />
+          <Suspense fallback={<IonLoading isOpen={true} message="Loading Media..."/>}>
+            <MatrixMedia/>
+          </Suspense>
           <ChatFab />
           <ChatModal title={post.title} room={discussionRoom} />
         </IonContent>
