@@ -2,9 +2,8 @@ import { selectorFamily, selector, atom} from 'recoil'
 
 export type PostType = {
   chupacabra_source: string,
-  remote_source: string,
   title: string,
-  html: string
+  uri: string
 }
 
 export const postsState = atom<Map<string, PostType>>({
@@ -18,9 +17,8 @@ export const postState = selectorFamily<PostType, string>({
     const postsMap = get(postsState)
     const post: PostType = postsMap.get(postId) || {
       chupacabra_source: '',
-      remote_source: '',
       title: '',
-      html: ''
+      uri: ''
     }
     return post
   }

@@ -35,7 +35,7 @@ const Post: React.FC = () => {
               <IonTitle>{post.title}</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <div className="exernal-content" dangerouslySetInnerHTML={{__html: post.html}}/>
+          {post.uri}
           <ChatFab />
           <ChatModal title={post.title} room={discussionRoom} />
         </IonContent>
