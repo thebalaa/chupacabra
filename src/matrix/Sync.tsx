@@ -44,7 +44,7 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
         const newPosts = room_events
           .filter(e=>e.timeline).flatMap(e=>e.timeline.events)
           .filter(e=>e.content.msgtype==='m.chupacabra')
-        setPosts((posts: any) =>{
+        newPosts && setPosts((posts: any) =>{
           var clone = new Map(posts)
           newPosts.map(p => clone.set(p.event_id, {
             chupacabra_source: p.sender,
