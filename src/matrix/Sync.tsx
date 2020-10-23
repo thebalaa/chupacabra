@@ -48,9 +48,8 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
           var clone = new Map(posts)
           newPosts.map(p => clone.set(p.event_id, {
             chupacabra_source: p.sender,
-            remote_source: 'Dracula Test Source',
-            title: p.content.title,
-            html: p.content.body
+            title: p.content.body,
+            uri: p.content.uri
           }))
           return clone
         })

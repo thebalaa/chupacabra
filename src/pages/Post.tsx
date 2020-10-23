@@ -5,6 +5,7 @@ import {useParams} from 'react-router-dom'
 import ChatFab from '../components/chat/ChatFab'
 import ChatModal from '../components/chat/ChatModal'
 import ChatSync from '../components/chat/ChatSync'
+import MatrixMedia from '../components/MatrixMedia'
 import {useRecoilValue} from 'recoil'
 import {postState} from '../recoil/feed'
 
@@ -35,7 +36,7 @@ const Post: React.FC = () => {
               <IonTitle>{post.title}</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <div className="exernal-content" dangerouslySetInnerHTML={{__html: post.html}}/>
+          <MatrixMedia uri={post.uri} />
           <ChatFab />
           <ChatModal title={post.title} room={discussionRoom} />
         </IonContent>
