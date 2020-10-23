@@ -1,4 +1,5 @@
-import { selectorFamily, selector, atom} from 'recoil'
+import { selectorFamily, selector, atom, useRecoilValue} from 'recoil'
+import {useParams} from 'react-router-dom'
 
 export type PostType = {
   chupacabra_source: string,
@@ -23,6 +24,12 @@ export const postState = selectorFamily<PostType, string>({
     return post
   }
 })
+
+export const usePostFromUrl = () => {
+  const {postId} = useParams()
+  const post = useRecoilValue(postState(postId))
+  return post
+}
 
 export const postList = selector<Array<string>>({
   key: "PostList",

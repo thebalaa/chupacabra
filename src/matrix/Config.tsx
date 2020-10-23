@@ -61,4 +61,9 @@ export const VALIDATE_STATUS = (status: number) => {
     return status < 500;
 }
 
-export const MATRIX_CREDS_STORAGE_KEY = 'chupacabra_matrix_creds'
+// TODO: Find a better way to handle updating login / stored cred interface
+// Hopefully not updated often
+export const MATRIX_CREDS_STORAGE_KEY = 'chupacabra_matrix_creds_1'
+
+export const CLIENT_API_PATH = '/_matrix/client/r0'
+export const MEDIA_API_PATH = '/_matrix/media/r0'

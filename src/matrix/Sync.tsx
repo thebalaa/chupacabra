@@ -2,7 +2,8 @@ import axios from 'axios'
 import {useSetRecoilState} from 'recoil'
 import {postsState, syncState} from '../recoil/feed'
 import {loggedInState} from '../recoil/auth'
-import {FILTER_CONFIG, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY} from './Config'
+import {FILTER_CONFIG, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY,
+        CLIENT_API_PATH} from './Config'
 import {Plugins} from '@capacitor/core'
 
 const {Storage} = Plugins
@@ -68,7 +69,7 @@ export const useSyncChupacabraPosts = () => {
   const syncPosts = async () =>  {
     const creds = await getCredsOrLogout(letIn)
     if(!creds){return}
-    const base_url = creds.base_url
+    const base_url = `${creds.homeserver_url}${CLIENT_API_PATH}`
     const authHeader = {Authorization: `Bearer ${creds.access_token}`}
     const user_id = creds.user_id
     const filter_id = await getFilterId(base_url, user_id, authHeader)

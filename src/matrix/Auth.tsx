@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {useSetRecoilState} from 'recoil'
 import {loggedInState, loginErrorState} from '../recoil/auth'
-import {VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY} from './Config'
+import {VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY, CLIENT_API_PATH} from './Config'
 import {Plugins} from '@capacitor/core'
 
 const {Storage} = Plugins
@@ -11,7 +11,7 @@ export const useLoginWithPassword = () => {
   const setLoginError = useSetRecoilState(loginErrorState)
   const loginWithPassword = async (homeserver: string, user_id: string, password: string) => {
     setLoginError('')
-    const base_url = `${homeserver}/_matrix/client/r0`
+    const base_url = `${homeserver}${CLIENT_API_PATH}`
     const res = await axios({
       method: 'post',
       url: `${base_url}/login`,
@@ -30,7 +30,7 @@ export const useLoginWithPassword = () => {
       return
     }
     if(res.data.access_token){
-      res.data.base_url = base_url
+      res.data.homeserver_url = homeserver
       await Storage.set({
         key: MATRIX_CREDS_STORAGE_KEY,
         value: JSON.stringify(res.data)
