@@ -6,7 +6,8 @@ export type PostType = {
   title: string,
   uri: string,
   room_name: string,
-  id: string
+  id: string,
+  server_ts: number
 }
 
 export const postsState = atom<Map<string, PostType>>({
@@ -23,7 +24,8 @@ export const postState = selectorFamily<PostType, string>({
       title: '',
       uri: '',
       room_name: '',
-      id: ''
+      id: '',
+      server_ts: 0
     }
     return post
   }
@@ -39,7 +41,9 @@ export const postList = selector<Array<string>>({
   key: "PostList",
   get: ({get}) => {
     const postMap = get(postsState)
-    return Array.from(postMap.keys())
+    const posts = Array.from(postMap.values())
+    posts.sort((a: PostType, b: PostType) => b.server_ts-a.server_ts)
+    return posts.map(p => p.id)
   }
 })
 
