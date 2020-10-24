@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import {IonFooter, IonToolbar, IonButtons, IonButton, IonTextarea} from '@ionic/react'
+import {usePostFromUrl} from '../../recoil/feed'
 import {useSendMessage} from '../../matrix/Chat'
 
-interface MessageComposerProps {
-  room: string
-}
-
-const MessageComposer: React.FC<MessageComposerProps> = ({room}) => {
+const MessageComposer: React.FC = () => {
+  const post = usePostFromUrl()
   const [message, setMessage] = useState<string>()
-  const sendMessage = useSendMessage(room)
+  const sendMessage = useSendMessage(post.room_name)
   const handleClick = async () => {
     await sendMessage(message!).catch(err => console.log(JSON.stringify(err)))
     setMessage('')

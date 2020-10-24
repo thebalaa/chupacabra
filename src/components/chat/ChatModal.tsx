@@ -1,16 +1,12 @@
 import React from 'react';
-import {IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonContent, IonButton} from '@ionic/react'
+import {IonModal, IonHeader, IonToolbar, IonButtons, IonContent, IonButton} from '@ionic/react'
 import {useRecoilState} from 'recoil'
 import {chatModalState} from '../../recoil/chat'
 import MessageList from './MessageList'
 import MessageComposer from './MessageComposer'
+import RoomTitle from './RoomTitle'
 
-interface ChatModalProps {
-  title: string,
-  room: string
-}
-
-const ChatModal: React.FC<ChatModalProps> = ({title, room}) => {
+const ChatModal: React.FC = () => {
   const [isOpen, setOpen] = useRecoilState(chatModalState)
   return (
     <IonModal isOpen={isOpen} onDidDismiss={()=>setOpen(false)}>
@@ -19,13 +15,13 @@ const ChatModal: React.FC<ChatModalProps> = ({title, room}) => {
             <IonButtons slot="end">
               <IonButton color='primary' fill='outline' onClick={()=>setOpen(false)}>Close</IonButton>
             </IonButtons>
-          <IonTitle>{title}</IonTitle>
+          <RoomTitle />
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <MessageList room={room} />
+        <MessageList />
       </IonContent>
-      <MessageComposer room={room} />
+      <MessageComposer />
     </IonModal>
   );
 };

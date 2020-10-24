@@ -1,49 +1,40 @@
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLoading} from '@ionic/react'
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonToolbar, IonLoading} from '@ionic/react'
 import React, {Suspense} from 'react'
-import {Helmet} from "react-helmet"
-import {useParams} from 'react-router-dom'
 import ChatFab from '../components/chat/ChatFab'
 import ChatModal from '../components/chat/ChatModal'
 import ChatSync from '../components/chat/ChatSync'
+import PostTitle from '../components/post/PostTitle'
+import PostHelmet from '../components/post/PostHelmet'
 import MatrixMedia from '../components/post/MatrixMedia'
-import {useRecoilValue} from 'recoil'
-import {postState} from '../recoil/feed'
 
 
 const Post: React.FC = () => {
-  const {postId} = useParams()
-  const post = useRecoilValue(postState(postId))
-  // TODO: Get room from post object once we actually have those getting passed in
-  const discussionRoom = '!vfsMVjFkUDCPvcWDFK:tincan.community'
   return (
     <>
-      <Helmet>
-        <title> {post.title} | Chupacabra</title>
-        <link rel="shortcut icon" type="image/png" href="/assets/icon/favicon.png" />
-      </Helmet>
+      <PostHelmet />
       <IonPage>
         <IonHeader>
           <IonToolbar>
               <IonButtons slot="start">
                 <IonBackButton />
               </IonButtons>
-            <IonTitle>{post.title}</IonTitle>
+            <PostTitle />
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
           <IonHeader collapse="condense">
             <IonToolbar>
-              <IonTitle>{post.title}</IonTitle>
+              <PostTitle />
             </IonToolbar>
           </IonHeader>
           <Suspense fallback={<IonLoading isOpen={true} message="Loading Media..."/>}>
             <MatrixMedia/>
           </Suspense>
           <ChatFab />
-          <ChatModal title={post.title} room={discussionRoom} />
+          <ChatModal />
         </IonContent>
       </IonPage>
-      <ChatSync room={discussionRoom}/>
+      <ChatSync/>
     </>
   );
 };

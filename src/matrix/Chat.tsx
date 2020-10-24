@@ -67,7 +67,7 @@ export const useSyncMatrixRoom = (roomId: string) => {
   const syncMessages = async () =>  {
     const creds = await getCredsOrLogout(letIn)
     if(!creds){return}
-    const base_url = creds.base_url
+    const base_url = `${creds.homeserver_url}${CLIENT_API_PATH}`
     const authHeader = {Authorization: `Bearer ${creds.access_token}`}
     const user_id = creds.user_id
     const filter_id = await getFilterId(base_url, user_id, authHeader, roomId)

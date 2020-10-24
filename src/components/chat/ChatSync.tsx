@@ -1,13 +1,11 @@
 import React from 'react';
 import {useSyncMatrixRoom} from '../../matrix/Chat'
+import {usePostFromUrl} from '../../recoil/feed'
 
-interface ChatSyncProps {
-  room: string
-}
-
-const ChatSync: React.FC<ChatSyncProps> = ({room}) => {
-  const syncMatrixRoom = useSyncMatrixRoom(room)
-  syncMatrixRoom()
+const ChatSync: React.FC = () => {
+  const post = usePostFromUrl()
+  const syncMatrixRoom = useSyncMatrixRoom(post.room_name)
+  post.room_name && syncMatrixRoom()
   return null
 };
 
