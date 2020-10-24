@@ -2,6 +2,7 @@ import axios from 'axios'
 import {useSetRecoilState, useRecoilState} from 'recoil'
 import {messagesState, roomSyncState} from '../recoil/chat'
 import {loggedInState} from '../recoil/auth'
+import {PostType} from '../recoil/feed'
 import {getRoomFilter, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY,
         CLIENT_API_PATH} from './Config'
 import { v4 as uuidv4 } from 'uuid'
@@ -43,14 +44,24 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
     if(res.data && res.data.rooms && res.data.rooms.join && res.data.rooms.join[roomId]){
       const room_events: any = res.data.rooms.join[roomId]
       const updateMessages = async () => {
-        const newMessages = room_events.timeline.events
+        const newMessages = room_events.timeline.events.filter((m: any) =>
+          m.content && m.content['m.relates_to']
+          && m.content['m.relates_to']['m.in_reply_to']
+          && m.content['m.relates_to']['m.in_reply_to'].event_id)
+          console.log(JSON.stringify(newMessages))
         newMessages && setRoomMessages((messages: any) =>{
           var clone = new Map(messages)
-          newMessages.map((m: any) => clone.set(m.event_id, {
-            sender: m.sender,
-            id: m.event_id,
-            body: m.content.body
-          }))
+          newMessages.map((m: any) => {
+            clone.set(m.event_id, {
+              sender: m.sender,
+              id: m.event_id,
+              body: m.content.body,
+              formatted_body: m.content.formatted_body,
+              post_id: m.content['m.relates_to']['m.in_reply_to'].event_id,
+              server_ts: m.origin_server_ts
+            })
+            return m
+          })
           return clone
         })
       }
@@ -67,7 +78,7 @@ export const useSyncMatrixRoom = (roomId: string) => {
   const syncMessages = async () =>  {
     const creds = await getCredsOrLogout(letIn)
     if(!creds){return}
-    const base_url = creds.base_url
+    const base_url = `${creds.homeserver_url}${CLIENT_API_PATH}`
     const authHeader = {Authorization: `Bearer ${creds.access_token}`}
     const user_id = creds.user_id
     const filter_id = await getFilterId(base_url, user_id, authHeader, roomId)
@@ -79,7 +90,7 @@ export const useSyncMatrixRoom = (roomId: string) => {
   return res
 }
 
-export const useSendMessage = (roomId: string) => {
+export const useSendMessage = (post: PostType) => {
   const letIn = useSetRecoilState(loggedInState)
   const sendMessage = async (message: string) => {
     const creds = await getCredsOrLogout(letIn)
@@ -89,9 +100,19 @@ export const useSendMessage = (roomId: string) => {
     const txnId = uuidv4()
     await axios({
       method: 'put',
-      url:`${base_url}/rooms/${roomId}/send/m.room.message/${txnId}`,
+      url:`${base_url}/rooms/${post.room_name}/send/m.room.message/${txnId}`,
       headers: authHeader,
-      data: {msgtype: "m.text", body: message},
+      data: {
+        msgtype: "m.text",
+        body: `> <${post.chupacabra_source}> ${post.title}\n\n${message}`,
+        format: 'org.matrix.custom.html',
+        formatted_body: `<mx-reply><blockquote><a href="https://matrix.to/#/${post.room_name}/${post.id}">In reply to</a> <a href="https://matrix.to/#/${post.chupacabra_source}">${post.chupacabra_source}</a><br>${post.title}</blockquote></mx-reply>${message}`,
+        'm.relates_to': {
+          'm.in_reply_to': {
+            event_id: post.id
+          }
+        }
+      },
       validateStatus: VALIDATE_STATUS
     }).catch(err => console.log(err))
   }

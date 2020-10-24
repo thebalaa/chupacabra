@@ -35,7 +35,7 @@ export const getRoomFilter = (roomId: string) => {return {
       not_types: ['*']
     },
     timeline: {
-      limit: 10,
+      limit: 50,
       types: [
         "m.room.message"
       ]

@@ -40,17 +40,28 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
       validateStatus: VALIDATE_STATUS
     }).catch(err => err)
     if(res.data && res.data.rooms && res.data.rooms.join){
-      const room_events: Array<any> = Object.values(res.data.rooms.join)
+      const rooms = Object.keys(res.data.rooms.join)
+      const room_events: Array<any> = rooms.map((room: string) => {
+        var events = res.data.rooms.join[room]
+        events.room_name = room
+        return events
+      })
       const updatePosts = async () => {
         const newPosts = room_events
-          .filter(e=>e.timeline).flatMap(e=>e.timeline.events)
+          .filter(e=>e.timeline).flatMap(e=>{
+                                           var events = e.timeline.events
+                                           events.map((ev:any) => ev.room_name = e.room_name)
+                                           return events
+                                 })
           .filter(e=>e.content.msgtype==='m.chupacabra')
         newPosts && setPosts((posts: any) =>{
           var clone = new Map(posts)
           newPosts.map(p => clone.set(p.event_id, {
             chupacabra_source: p.sender,
             title: p.content.body,
-            uri: p.content.uri
+            uri: p.content.uri,
+            room_name: p.room_name,
+            id: p.event_id
           }))
           return clone
         })

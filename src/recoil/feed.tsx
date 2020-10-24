@@ -4,7 +4,9 @@ import {useParams} from 'react-router-dom'
 export type PostType = {
   chupacabra_source: string,
   title: string,
-  uri: string
+  uri: string,
+  room_name: string,
+  id: string
 }
 
 export const postsState = atom<Map<string, PostType>>({
@@ -19,7 +21,9 @@ export const postState = selectorFamily<PostType, string>({
     const post: PostType = postsMap.get(postId) || {
       chupacabra_source: '',
       title: '',
-      uri: ''
+      uri: '',
+      room_name: '',
+      id: ''
     }
     return post
   }
