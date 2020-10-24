@@ -1,0 +1,6 @@
+.message-list {
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  height: 100%
+}

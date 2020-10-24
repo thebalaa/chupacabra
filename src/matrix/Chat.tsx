@@ -49,7 +49,8 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
           newMessages.map((m: any) => clone.set(m.event_id, {
             sender: m.sender,
             id: m.event_id,
-            body: m.content.body
+            body: m.content.body,
+            server_ts: m.origin_server_ts
           }))
           return clone
         })

@@ -3,7 +3,8 @@ import { atom, atomFamily, selectorFamily} from 'recoil'
 export type MessageType = {
   body: string,
   sender: string,
-  id: string
+  id: string,
+  server_ts: number
 }
 
 export const chatModalState = atom<boolean>({
@@ -20,7 +21,9 @@ export const roomMessagesSelector = selectorFamily<Array<MessageType>, string>({
   key: "MessageList",
   get: roomId => ({get}) => {
     const messageMap = get(messagesState(roomId))
-    return Array.from(messageMap.values())
+    const messages = Array.from(messageMap.values())
+    messages.sort((a: MessageType, b: MessageType) => b.server_ts - a.server_ts)
+    return messages
   }
 })
 

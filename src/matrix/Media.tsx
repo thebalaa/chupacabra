@@ -15,6 +15,5 @@ export const loadMedia = async (uri: string) => {
     url:`${base_url}/download/${server_media}`,
     validateStatus: VALIDATE_STATUS
   }).catch(err => err)
-  console.log(JSON.stringify(content))
   return content.data
 }
