@@ -44,15 +44,24 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
     if(res.data && res.data.rooms && res.data.rooms.join && res.data.rooms.join[roomId]){
       const room_events: any = res.data.rooms.join[roomId]
       const updateMessages = async () => {
-        const newMessages = room_events.timeline.events
+        const newMessages = room_events.timeline.events.filter((m: any) =>
+          m.content && m.content['m.relates_to']
+          && m.content['m.relates_to']['m.in_reply_to']
+          && m.content['m.relates_to']['m.in_reply_to'].event_id)
+          console.log(JSON.stringify(newMessages))
         newMessages && setRoomMessages((messages: any) =>{
           var clone = new Map(messages)
-          newMessages.map((m: any) => clone.set(m.event_id, {
-            sender: m.sender,
-            id: m.event_id,
-            body: m.content.body,
-            server_ts: m.origin_server_ts
-          }))
+          newMessages.map((m: any) => {
+            clone.set(m.event_id, {
+              sender: m.sender,
+              id: m.event_id,
+              body: m.content.body,
+              formatted_body: m.content.formatted_body,
+              post_id: m.content['m.relates_to']['m.in_reply_to'].event_id,
+              server_ts: m.origin_server_ts
+            })
+            return m
+          })
           return clone
         })
       }
@@ -94,10 +103,15 @@ export const useSendMessage = (post: PostType) => {
       url:`${base_url}/rooms/${post.room_name}/send/m.room.message/${txnId}`,
       headers: authHeader,
       data: {
-        body: `> <${post.chupacabra_source}> ${post.title}\n\n${message}`,
         msgtype: "m.text",
-        format: "org.matrix.custom.html",
-        formatted_body: `<mx-reply><blockquote><a href="https://matrix.to/#/${post.room_name}/${post.id}">In reply to</a> <a href="${post.chupacabra_source}">${post.chupacabra_source}</a>${post.title}</blockquote></mx-reply>${message}`
+        body: `> <${post.chupacabra_source}> ${post.title}\n\n${message}`,
+        format: 'org.matrix.custom.html',
+        formatted_body: `<mx-reply><blockquote><a href="https://matrix.to/#/${post.room_name}/${post.id}">In reply to</a> <a href="https://matrix.to/#/${post.chupacabra_source}">${post.chupacabra_source}</a><br>${post.title}</blockquote></mx-reply>${message}`,
+        'm.relates_to': {
+          'm.in_reply_to': {
+            event_id: post.id
+          }
+        }
       },
       validateStatus: VALIDATE_STATUS
     }).catch(err => console.log(err))
