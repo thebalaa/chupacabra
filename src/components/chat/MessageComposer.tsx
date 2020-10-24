@@ -6,7 +6,7 @@ import {useSendMessage} from '../../matrix/Chat'
 const MessageComposer: React.FC = () => {
   const post = usePostFromUrl()
   const [message, setMessage] = useState<string>()
-  const sendMessage = useSendMessage(post.room_name)
+  const sendMessage = useSendMessage(post)
   const handleClick = async () => {
     await sendMessage(message!).catch(err => console.log(JSON.stringify(err)))
     setMessage('')

@@ -60,7 +60,8 @@ const syncForever = async(base_url: string, authHeader: any, filter_id: string,
             chupacabra_source: p.sender,
             title: p.content.body,
             uri: p.content.uri,
-            room_name: p.room_name
+            room_name: p.room_name,
+            id: p.event_id
           }))
           return clone
         })

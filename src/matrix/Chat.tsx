@@ -2,6 +2,7 @@ import axios from 'axios'
 import {useSetRecoilState, useRecoilState} from 'recoil'
 import {messagesState, roomSyncState} from '../recoil/chat'
 import {loggedInState} from '../recoil/auth'
+import {PostType} from '../recoil/feed'
 import {getRoomFilter, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY,
         CLIENT_API_PATH} from './Config'
 import { v4 as uuidv4 } from 'uuid'
@@ -80,7 +81,7 @@ export const useSyncMatrixRoom = (roomId: string) => {
   return res
 }
 
-export const useSendMessage = (roomId: string) => {
+export const useSendMessage = (post: PostType) => {
   const letIn = useSetRecoilState(loggedInState)
   const sendMessage = async (message: string) => {
     const creds = await getCredsOrLogout(letIn)
@@ -90,9 +91,14 @@ export const useSendMessage = (roomId: string) => {
     const txnId = uuidv4()
     await axios({
       method: 'put',
-      url:`${base_url}/rooms/${roomId}/send/m.room.message/${txnId}`,
+      url:`${base_url}/rooms/${post.room_name}/send/m.room.message/${txnId}`,
       headers: authHeader,
-      data: {msgtype: "m.text", body: message},
+      data: {
+        body: `> <${post.chupacabra_source}> ${post.title}\n\n${message}`,
+        msgtype: "m.text",
+        format: "org.matrix.custom.html",
+        formatted_body: `<mx-reply><blockquote><a href="https://matrix.to/#/${post.room_name}/${post.id}">In reply to</a> <a href="${post.chupacabra_source}">${post.chupacabra_source}</a>${post.title}</blockquote></mx-reply>${message}`
+      },
       validateStatus: VALIDATE_STATUS
     }).catch(err => console.log(err))
   }

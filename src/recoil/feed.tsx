@@ -5,7 +5,8 @@ export type PostType = {
   chupacabra_source: string,
   title: string,
   uri: string,
-  room_name: string
+  room_name: string,
+  id: string
 }
 
 export const postsState = atom<Map<string, PostType>>({
@@ -21,7 +22,8 @@ export const postState = selectorFamily<PostType, string>({
       chupacabra_source: '',
       title: '',
       uri: '',
-      room_name: ''
+      room_name: '',
+      id: ''
     }
     return post
   }
