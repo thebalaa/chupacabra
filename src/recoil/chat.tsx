@@ -7,7 +7,8 @@ export type MessageType = {
   post_id: string,
   sender: string,
   id: string,
-  server_ts: number
+  server_ts: number,
+  room_name: string
 }
 
 export const chatModalState = atom<boolean>({
@@ -15,24 +16,19 @@ export const chatModalState = atom<boolean>({
   default: false
 })
 
-export const messagesState = atomFamily<Map<string, MessageType>, string>({
+export const messagesState = atom<Map<string, MessageType>>({
   key: 'MessageMap',
-  default: roomId => new Map<string, MessageType>()
+  default: new Map<string, MessageType>()
 })
 
 export const postMessagesSelector = selectorFamily<Array<MessageType>, PostType>({
   key: "MessageList",
   get: (post: PostType) => ({get}) => {
-    const messageMap = get(messagesState(post.room_name))
+    const messageMap = get(messagesState)
     const messages = Array.from(messageMap.values()).filter((m: MessageType) =>
-      m.post_id === post.id
+      post.room_name === m.room_name && m.post_id === post.id
     )
     messages.sort((a: MessageType, b: MessageType) => b.server_ts - a.server_ts)
     return messages
   }
-})
-
-export const roomSyncState = atomFamily<boolean, string>({
-  key: 'lastSyncState',
-  default: roomId => false
 })
