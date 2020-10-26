@@ -3,6 +3,7 @@ import React from 'react'
 import {Helmet} from "react-helmet"
 import PostList from '../components/feed/PostList'
 import SyncLoader from '../components/feed/SyncLoader'
+import FollowModal from '../components/feed/FollowModal'
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -26,6 +27,7 @@ const Home: React.FC = () => {
           <PostList />
           <SyncLoader />
         </IonContent>
+        <FollowModal/>
       </IonPage>
     </>
   );

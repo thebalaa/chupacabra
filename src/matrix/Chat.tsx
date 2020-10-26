@@ -1,10 +1,8 @@
 import axios from 'axios'
-import {useSetRecoilState, useRecoilState} from 'recoil'
-import {messagesState} from '../recoil/chat'
+import {useSetRecoilState} from 'recoil'
 import {loggedInState} from '../recoil/auth'
 import {PostType} from '../recoil/feed'
-import {getRoomFilter, VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY,
-        CLIENT_API_PATH} from './Config'
+import {VALIDATE_STATUS, MATRIX_CREDS_STORAGE_KEY, CLIENT_API_PATH} from './Config'
 import { v4 as uuidv4 } from 'uuid'
 import {Plugins} from '@capacitor/core'
 

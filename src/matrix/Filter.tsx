@@ -8,7 +8,7 @@ import {Plugins} from '@capacitor/core'
 
 const {Storage} = Plugins
 
-const useSetFilter = () => {
+export const useSetFilter = () => {
   const setFollowedRooms = useSetRecoilState(followedRoomsState)
   const setFilter = async (roomList: Set<string>) => {
     const newSyncKey = uuidv4()
@@ -27,7 +27,7 @@ const useSetFilter = () => {
       data: getRoomFilter(Array.from(roomList)),
       validateStatus: VALIDATE_STATUS
     }).catch(err => err)
-    const filter_obj = {filter_id: res.data.filter_id, since: null}
+    const filter_obj = {filter_id: res.data.filter_id, since: ''}
     await Storage.set({key: newSyncKey, value: JSON.stringify(filter_obj)})
     setFollowedRooms(roomList)
     oldSyncKey && await Storage.remove({key: oldSyncKey})

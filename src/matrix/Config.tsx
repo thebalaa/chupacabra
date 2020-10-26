@@ -37,6 +37,7 @@ export const VALIDATE_STATUS = (status: number) => {
 export const MATRIX_CREDS_STORAGE_KEY = 'chupacabra_matrix_creds_1'
 export const MATRIX_SYNC_KEY = 'chupacabra_matrix_sync_key'
 export const CHUPA_POST_KEY = 'chupacabra_post_'
+export const CHUPA_MESSAGE_KEY = 'chupacabra_message_'
 
 export const CLIENT_API_PATH = '/_matrix/client/r0'
 export const MEDIA_API_PATH = '/_matrix/media/r0'
