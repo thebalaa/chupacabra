@@ -1,5 +1,5 @@
-# Chupacabra / Dracula
-Decentralized Social media built on top of the Matrix Protocol. Sucks blood from other social media sites.
+# Chupacabra
+Decentralized Social media built on top of the Matrix Protocol.
 
 ## install / dev
 you'll need to install `ionic-cli` and `yarn`.
