@@ -12,7 +12,7 @@ export type PostType = {
 
 export const followModalState = atom<boolean>({
   key: "FollowModalOpen",
-  default: true
+  default: false
 })
 
 export const postsState = atom<Map<string, PostType>>({
@@ -54,5 +54,5 @@ export const postList = selector<Array<string>>({
 
 export const syncState = atom<boolean>({
   key: "SyncState",
-  default: false
+  default: true
 })

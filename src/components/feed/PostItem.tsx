@@ -7,7 +7,6 @@ import './PostItem.css'
 
 const timeSince = (ts: number) => {
   var seconds = Math.floor((Date.now() - ts) / 1000)
-  console.log(seconds)
   var interval = seconds / 31536000
   if (interval > 1) {
     return Math.floor(interval) + " years"
