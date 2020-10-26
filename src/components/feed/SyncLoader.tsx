@@ -1,14 +1,14 @@
 import React from 'react'
 import {useRecoilValue} from 'recoil'
 import {syncState} from '../../recoil/feed'
-import {IonLoading} from '@ionic/react'
+import {IonSpinner, IonItem} from '@ionic/react'
 
 const SyncLoader: React.FC = () => {
   const isSynced = useRecoilValue(syncState)
   return (
-    <>
-      <IonLoading message="Syncing Feed..." isOpen={!isSynced}/>
-    </>
+    <IonItem color="background" lines="none">
+      {!isSynced && <IonSpinner />}
+    </IonItem>
   )
 }
 

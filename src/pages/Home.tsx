@@ -3,6 +3,9 @@ import React from 'react'
 import {Helmet} from "react-helmet"
 import PostList from '../components/feed/PostList'
 import SyncLoader from '../components/feed/SyncLoader'
+import FollowModal from '../components/feed/FollowModal'
+import FollowButton from '../components/feed/FollowButton'
+import NotFollowing from '../components/feed/NotFollowing'
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -14,6 +17,7 @@ const Home: React.FC = () => {
       <IonPage>
         <IonHeader>
           <IonToolbar>
+            <FollowButton />
             <IonTitle>Feed <IonIcon className="feed-icon" size="large" src="/assets/icon/feed.svg" /></IonTitle>
           </IonToolbar>
         </IonHeader>
@@ -23,9 +27,11 @@ const Home: React.FC = () => {
               <IonTitle>Feed <IonIcon className="feed-icon" size="large" src="/assets/icon/feed.svg" /></IonTitle>
             </IonToolbar>
           </IonHeader>
-          <PostList />
           <SyncLoader />
+          <NotFollowing />
+          <PostList />
         </IonContent>
+        <FollowModal/>
       </IonPage>
     </>
   );

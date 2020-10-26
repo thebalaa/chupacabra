@@ -2,12 +2,12 @@ import React from 'react';
 import { useRecoilValue } from 'recoil'
 import {loggedInState} from '../recoil/auth'
 import {useLoginWithCreds} from '../matrix/Auth'
-import {useSyncChupacabraPosts} from '../matrix/Sync'
+import {useSyncMatrix} from '../matrix/Sync'
 
 const LoggedInMatrixScripts: React.FC = () => {
-  const syncPosts = useSyncChupacabraPosts()
+  const syncMatrix = useSyncMatrix()
   console.log('RENDERED LOGGEDIN COMPONENT')
-  syncPosts()
+  syncMatrix()
   return null
 }
 

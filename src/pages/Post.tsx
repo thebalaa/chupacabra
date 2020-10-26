@@ -2,7 +2,6 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonToolbar, 
 import React, {Suspense} from 'react'
 import ChatFab from '../components/chat/ChatFab'
 import ChatModal from '../components/chat/ChatModal'
-import ChatSync from '../components/chat/ChatSync'
 import PostTitle from '../components/post/PostTitle'
 import PostHelmet from '../components/post/PostHelmet'
 import MatrixMedia from '../components/post/MatrixMedia'
@@ -34,7 +33,6 @@ const Post: React.FC = () => {
           <ChatModal />
         </IonContent>
       </IonPage>
-      <ChatSync/>
     </>
   );
 };
