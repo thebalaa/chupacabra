@@ -1,13 +1,21 @@
 # Chupacabra
 Decentralized Social media built on top of the Matrix Protocol.
 
-## install / dev
-you'll need to install `ionic-cli` and `yarn`.
+## Running
+
+### Installation
+you'll need to install `ionic-cli` and `npm`.
 just run:
 ```bash
-yarn install
+npm install
 ```
-and then 
-```
+
+### Dev
+```bash
 ionic serve
+```
+
+### Production
+```bash
+ionic build
 ```
