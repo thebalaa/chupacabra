@@ -1,4 +1,18 @@
-.full-width{
-  width: 100%;
-  display: block;
+.post-title{
+  text-align: center;
+}
+
+.room-name{
+  display: table;
+  margin-left: auto;
+}
+
+.post-card{
+  max-width: 350px!important;
+}
+
+.shared-text{
+  text-align: right;
+  display: table;
+  margin-left: auto;
 }

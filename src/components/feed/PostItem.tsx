@@ -3,7 +3,7 @@ import {useRecoilValue} from 'recoil'
 import {postState, PostType} from '../../recoil/feed'
 import {roomState} from '../../recoil/rooms'
 import {IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonText,
-        IonCardContent, IonChip} from '@ionic/react'
+        IonCardContent, IonSkeletonText} from '@ionic/react'
 import './PostItem.css'
 
 const timeSince = (ts: number) => {
@@ -43,27 +43,26 @@ const RoomPart: React.FC<RoomPartProps> = ({room_name}) => {
   const room = useRecoilValue(roomState(room_name))
   return (
     <>
-      <IonChip outline>{room.name}</IonChip>
+      <IonText className='room-name'>{room.name}</IonText>
     </>
   )
 }
 
 const PostItem: React.FC<PostItemProps> = ({postId}) => {
   const post:PostType = useRecoilValue(postState(postId))
-  const posted_date = new Date(post.server_ts)
   return (
-    <IonCard button routerLink={`posts/${postId}`} routerDirection="forward">
+    <IonCard className='post-card' button routerLink={`posts/${postId}`} routerDirection="forward">
         <IonCardHeader>
-          <IonCardSubtitle>{posted_date.toLocaleDateString()} - {timeSince(post.server_ts)} ago</IonCardSubtitle>
-          <IonCardTitle>{post.title}</IonCardTitle>
-        </IonCardHeader>
-        <IonCardContent>
-          <IonText>
-            <IonChip outline>{post.chupacabra_source}</IonChip> <br/>
-            <IonChip outline>{post.room_name}</IonChip> <br/>
-            <Suspense fallback={<IonChip outline/>}>
+          <IonCardSubtitle>
+            <Suspense fallback={<IonText className='room-name'> <IonSkeletonText /> </IonText>}>
                   <RoomPart room_name={post.room_name} />
             </Suspense>
+          </IonCardSubtitle>
+          <IonCardTitle className='post-title'>{post.title}</IonCardTitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonText className='shared-text'>
+            {post.chupacabra_source} shared <br/> {timeSince(post.server_ts)} ago
           </IonText>
         </IonCardContent>
     </IonCard>
