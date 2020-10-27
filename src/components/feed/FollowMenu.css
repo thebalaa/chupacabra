@@ -1,0 +1,8 @@
+.room-id{
+  display: block!important;
+}
+
+.room-text{
+  overflow: hidden!important;
+  text-overflow: ellipsis!important;
+}

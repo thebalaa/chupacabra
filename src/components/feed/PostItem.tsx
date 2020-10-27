@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import {useRecoilValue} from 'recoil'
 import {postState, PostType} from '../../recoil/feed'
+import {roomState} from '../../recoil/rooms'
 import {IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonText,
         IonCardContent, IonChip} from '@ionic/react'
 import './PostItem.css'
@@ -34,6 +35,19 @@ interface PostItemProps {
   postId: string
 }
 
+interface RoomPartProps{
+  room_name: string
+}
+
+const RoomPart: React.FC<RoomPartProps> = ({room_name}) => {
+  const room = useRecoilValue(roomState(room_name))
+  return (
+    <>
+      <IonChip outline>{room.name}</IonChip>
+    </>
+  )
+}
+
 const PostItem: React.FC<PostItemProps> = ({postId}) => {
   const post:PostType = useRecoilValue(postState(postId))
   const posted_date = new Date(post.server_ts)
@@ -45,8 +59,11 @@ const PostItem: React.FC<PostItemProps> = ({postId}) => {
         </IonCardHeader>
         <IonCardContent>
           <IonText>
-            Shared by: <IonChip outline>{post.chupacabra_source}</IonChip> <br/>
-            in: <IonChip outline>{post.room_name}</IonChip>
+            <IonChip outline>{post.chupacabra_source}</IonChip> <br/>
+            <IonChip outline>{post.room_name}</IonChip> <br/>
+            <Suspense fallback={<IonChip outline/>}>
+                  <RoomPart room_name={post.room_name} />
+            </Suspense>
           </IonText>
         </IonCardContent>
     </IonCard>
