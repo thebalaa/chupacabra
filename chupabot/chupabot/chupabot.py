@@ -1,4 +1,3 @@
-import os
 import datetime
 import random
 import re
@@ -75,12 +74,3 @@ class ChupaBotController():
         html = self.docker.containers.run('singlefile', uri, auto_remove=True).strip()
         print('Sending reply...')
         return ChupaPost(html, title)
-
-creds = {
-    'homeserver': os.environ['HS_URL'],
-    'user': os.environ['BOT_MATRIX_ID'],
-    'password': os.environ['BOT_PASSWORD']
-}
-
-bot = ChupaBotController.create_matrix_bot(creds)
-bot.run()
